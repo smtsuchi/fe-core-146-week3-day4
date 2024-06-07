@@ -1,3 +1,4 @@
+console.log('HELLO WORLD 2');
 // JavaScript Arrays
 const ingredients = ['flour', 'sugar', 'eggs', 'salt'];
 ingredients.push('butter');
@@ -19,7 +20,7 @@ console.log('filtered', filtered);
 let greeting = "Hello, World!";
 console.log(greeting.length); // Outputs: 13
 console.log(greeting.toUpperCase()); // Outputs: HELLO, WORLD!
-console.log(greeting.substring(0, 5)); // Outputs: Hello
+console.log(greeting.substring(1, 5)); // Outputs: Hello
 console.log(greeting.split(",")); // Outputs: ["Hello", " World!"]
 
 
@@ -29,7 +30,7 @@ console.log(sentence.indexOf("fox")); // Outputs: 16
 console.log(sentence.lastIndexOf("the")); // Outputs: 31
 
 // Regular Expressions
-let pattern1 = /hello/;
+let pattern1 = /[dsfsd]+/;
 console.log(pattern1.test("hello, world")); // Outputs: true
 
 let pattern2 = /\\d+/; // Matches one or more digits
@@ -40,6 +41,7 @@ console.log("abc123".match(pattern2)); // Outputs: ["123"]
 let post = "Hey @JohnDoe, did you see the new #JavaScript tutorial? #coding";
 
 // Extract mentions (usernames) from the post
+// The g outside the slashes / /g is a flag. provides advance search functionality
 let mentions = post.match(/@[A-Za-z0-9_]+/g);
 console.log("Mentions:", mentions);
 
@@ -58,7 +60,6 @@ console.log("Hashtags:", hashtags);
         etc..
 }
 */
-
 const day =  new Date().getDay()
 console.log(day)
 const literalDay = new Date().toString()
@@ -76,6 +77,15 @@ switch (day) {
         break
     case 3:
         console.log("It's Wednesday my duuuudes")
+        break
+    case 4:
+        console.log("Thursdayyy")
+        break
+    case 5:
+        console.log("Friyay")
+        break
+    case 6:
+        console.log("Sats")
         break
     default:
         console.log('some other day')
@@ -100,6 +110,11 @@ switch (literalDay.split(' ')[0]) {
 };
 
 //  JS Objects (Dictionaries)
+const test = '1234567'
+const sayHello = () => {
+    console.log("Hello, today is a good day!")
+}
+
 const person = {
     name: "Shoha",
     age: 9001,
@@ -108,18 +123,21 @@ const person = {
     'Content-Type': {
         category: "Human",
         mode: "Beast"
-    }
+    },
+    test,
+    greeting: sayHello,
 }
+
 // acces data in obj
+console.log(person)
 console.log(person['age'])  // bracket notation
 console.log(person.age) // dot notation
-
-//
+person.greeting()
+person['another one'] = 'DJ Khaled'
+console.log(person)
 const x = "name"
 console.log(person['Content-Type'].mode)
 console.log(person[x])
-//
-
 
 
 let person2 = {
@@ -147,6 +165,7 @@ let person2 = {
 console.log(person2.teams[0].soccer[1])
 console.log(person2.fav_color[2])
 
+// this is a STATIC method
 console.log(Object.keys(person2))
 console.log(Object.values(person2))
 
@@ -164,10 +183,13 @@ function Car (make, model, year){
     this.make = make;
     this.model = model;
     this.year = year;
+    this.func1 = () => {}
+    this.func2 = function(){}
 
     // make a method in a JS prototype
     this.printInfo = function(param) {
         console.log(param);
+        return `This car is a ${this.year} ${this.make} ${this.model}` // javascript f-string uses BACK-TICKS and ${}
         return 'This car is a ' + this.year + ' ' + this.make + ' ' + this.model+'.'
     };
     this.method2 = function (param) {
@@ -180,7 +202,29 @@ function Car (make, model, year){
 };
 // instantiate
 const c1 = new Car('Honda', "Civic", 1999)
+const c2 = new Car('Tesla', "CyberTruck", 2025)
 console.log(c1.printInfo('blah extra stuff'))
+console.log(c2.printInfo())
+console.log(c2, typeof c2);
+
+// simple
+class Car2 {
+    constructor(make, model, y) {
+        this.make = make;
+        this.model = model;
+        this.year = y;
+    }
+
+    // ES5 .. notice 'function' keyword is not needed
+    method1 () {
+        return 'something'
+    }
+
+    // ES6 arrow function.. notice const declaration not needed.
+    method2 = () => {
+        return 'something else'
+    }
+}
 
 class Sentient {
     constructor(){
@@ -192,7 +236,7 @@ class Sentient {
 // create a class
 class Human extends Sentient {
     constructor(name, age) {
-        super()
+        super(); // this calls your parent's constructor (Sentient's constructor which sets the this.sentient will be run)
         this.name = name
         this.age = age
         this.alive = true
@@ -230,8 +274,6 @@ class Baby extends Human{
         console.log('this is func 3')
     }
 };
-
-
 const h1 = new Human("Shoha", 9002)
 h1.printInfo()
 h1.func2()
@@ -248,26 +290,33 @@ console.log(b1.sentient)
 const func1 = () => {
     console.log('Do function 1')
 };
+const another = () => {
+    console.log('do me instead')
+}
 
 const func2 = (callback) => {
     console.log('things done prior to callback')
     callback()
-
 };
+
 func2(func1)
+
+func2(another)
 
 
 // Promises
 //create a promise
 
 const getMePokemon = (name) => {
-    return new Promise((resolve, reject)=>{
-        // this needs to take time..
+    const validPokemon = ['pikachu', 'charizard'];
+    return new Promise((resolve, reject) => {
         setTimeout(()=>{
-            if (name == 'shoha'){
-                reject('That pokemon does not exist')
+            if (validPokemon.includes(name)){
+                resolve(`Hey, i found ${name}, here you go.`)
             }
-            resolve(`Successfully got ${name}'s data`)
+            else {
+                reject(`${name} is not a valid pokemon. Here is a list of valid pokemon: ${validPokemon}`)
+            }
         }, 5000)
     })
 };
@@ -275,26 +324,33 @@ const getMePokemon = (name) => {
 
 const response = getMePokemon('shoha')
 console.log(response)
+const response2 = getMePokemon('pikachu')
+console.log(response2)
 
 setTimeout(()=>{
     console.log(response)
 }, 5001)
+setTimeout(()=>{
+    console.log(response2)
+}, 5001)
 
 
-// two ways to repsond to a fulfilled/rejected promise
-// old way (ES5 syntax) .then/.catch
+// // two ways to repsond to a fulfilled/rejected promise
+// // old way (ES5 syntax) .then/.catch
 getMePokemon('shoha')
 .then((resolveData)=>{console.log(resolveData, 'from .then')})
 .catch((rejectData)=>{console.log(rejectData, 'from .catch')})
 
 // new way (ES6 syntax) await/async
-const gettingPokeData = async () => {
-    const res = await getMePokemon('shoha')
+const gettingPokeData = async (name) => {
+    const res = await getMePokemon(name)
     console.log(res, 'from ASYNC version')
 };
-gettingPokeData()
+gettingPokeData('pikachu')
+gettingPokeData('charizard')
 
 
+// ES5
 async function gettingPokeData2 () {
     try{
 
